@@ -260,12 +260,10 @@
 </script>
 
 <div class="portfolio-container">
+    <h2>Total Balance</h2>
+
     <div class="summary-container">
-        <div class="metric">
-            <div class="metric-item">
-                <div class="value">{currencySymbols[selectedCurrency] || ''}{formatValue(totalBalance)}</div>
-            </div>
-        </div>
+
         
         <div class="currency-toggle">
             {#each Object.keys(currencySymbols) as currency}
@@ -277,7 +275,11 @@
                 </button>
             {/each}
         </div>
-        
+        <div class="metric">
+            <div class="metric-item">
+                <div class="value">{currencySymbols[selectedCurrency] || ''}{formatValue(totalBalance)}</div>
+            </div>
+        </div>
         <div class="metric-item">
             <div class="metric-label">24h Change</div>
             <div class="value" class:positive={portfolioGrowth > 0} class:negative={portfolioGrowth < 0}>
@@ -404,6 +406,10 @@
         border-radius: 10px;
         color: white;
         width: 100%;
+
+        h2 {
+            font-size: 2rem;
+        }
     }
     
     .summary-container {
@@ -430,7 +436,7 @@
     }
     
     .value {
-        font-size: 28px;
+        font-size: 3rem;
         font-weight: bold;
     }
     

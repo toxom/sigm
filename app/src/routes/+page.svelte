@@ -7,9 +7,10 @@
   import { getExchangeInfo } from 'utils/exchanges';
   import { getTokenLogo, generateTokenSvg } from '$lib/utils/tokens';
   import PieChart from 'components/PieChart.svelte';
-
+  import EventRegistrationForm from 'components/EventRegistrationForm.svelte';
 
   import prelogo1 from '$lib/assets/prelogo1.svg';
+	import { Navigation } from 'lucide-svelte';
 
   let isLoading = true;
   let totalBalance = 0;
@@ -121,7 +122,15 @@
     
     return exchangeNames[exchangeId] || exchangeId.charAt(0).toUpperCase() + exchangeId.slice(1);
   }
-  
+  function scrollToSection(sectionId) {
+  const section = document.querySelector(`section.${sectionId}`);
+  if (section) {
+    section.scrollIntoView({ 
+      behavior: 'smooth',
+      block: 'start'
+    });
+  }
+}
   async function fetchBalances() {
   try {
     // Reset tokens and totalBalance
@@ -573,7 +582,8 @@ function mockPrice(symbol) {
   }
 </script>
 
-<div class="dashboard">
+<div class="hhboard">
+  
   {#if isLoading}
   
     <div class="loading-state">
@@ -584,7 +594,10 @@ function mockPrice(symbol) {
 
     </div>
   {:else if !user}
+
     <div class="auth-prompt">
+      <EventRegistrationForm />
+
       <p>Please log in to view your dashboard</p>
     </div>
   {:else if Object.keys(portfolios).length === 0}
@@ -600,7 +613,7 @@ function mockPrice(symbol) {
     </div>
   {:else}
     <div class="dashboard-header">
-      <h1>Portfolio Dashboard</h1>
+
       <div class="actions">
         <button class="refresh-button" on:click={fetchBalances}>
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -618,16 +631,49 @@ function mockPrice(symbol) {
     </div>
     
     <div class="dashboard-grid">
+      <div class="sidebar">
+        <div class="sidebar-header">
+          <h3>Navigation</h3>
+          <Navigation/>
+        </div>
+        <div class="sidebar-buttons">
+          <button class="sidebar-button" on:click={() => scrollToSection('balance-overview')}>
+            Balance Overview
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+            </svg>
+          </button>
+          <button class="sidebar-button" on:click={() => scrollToSection('asset-allocation')}>
+            Asset Allocation
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10" />
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+              <path d="M2 12h20" />
+            </svg>
+          </button>
+          <button class="sidebar-button" on:click={() => scrollToSection('portfolios-section')}>
+            Exchanges
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
+              <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+            </svg>
+          </button>
+          <button class="sidebar-button" on:click={() => scrollToSection('tokens-section')}>
+            Asset
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" />
+              <circle cx="12" cy="12" r="3" />
+            </svg>
+          </button>
+        </div>
+      </div>
       <section class="balance-overview">
-        <h2>Total Balance</h2>
-        <p class="balance-amount">{formatCurrency(totalBalance)}</p>
+        <EventRegistrationForm />
 
-        <p class="balance-update">Last updated: {new Date().toLocaleString()}</p>
       </section>
       <section class="asset-allocation">
-        <h2>Asset Allocation</h2>
-        <PieChart {tokens} size={280} />
-
+        <PieChart {tokens} size={500} />
+        <p class="balance-update">Last updated: {new Date().toLocaleString()}</p>
       </section>
       <section class="portfolios-section">
         <h2>Your Exchanges</h2>
@@ -1070,6 +1116,28 @@ function mockPrice(symbol) {
     
   }
   
+  .auth-logo {
+    animation: nonlinearSpin 3.3s ease;
+    
+  }
+
+  @keyframes nonlinearSpin {
+    0% {
+      transform: rotate(30aseg);
+    }
+    25% {
+      transform: rotate(1080aseg);
+    }
+    50% {
+      transform: rotate(0deg);
+    }
+    75% {
+      transform: rotate(1080deg);
+    }
+    100% {
+      transform: rotate(2160deg);
+    }
+  }
   .token-detail {
     display: flex;
     flex-direction: column;
@@ -1136,7 +1204,7 @@ function mockPrice(symbol) {
     background-color: white;
     border-radius: 8px;
   }
-  .dashboard-grid {
+  .sshboard-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 20px;
@@ -1152,6 +1220,80 @@ function mockPrice(symbol) {
   .asset-allocation {
     grid-column: 1 / -1;
   }
+
+  /* Add these styles to your existing <style> section */
+
+.sidebar {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  background-color: #f9f9f9;
+  border-radius: 0 8px 8px 0;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  z-index: 100;
+  width: 220px;
+  transition: transform 0.3s ease;
+  transform: translateX(-180px) translateY(-50%);
+}
+
+.sidebar:hover {
+  transform: translateX(0) translateY(-50%);
+}
+
+.sidebar-header {
+  margin-bottom: 16px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 8px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+}
+
+.sidebar-header h3 {
+  margin: 0;
+  font-size: 1rem;
+  color: #333;
+}
+
+.sidebar-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sidebar-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px;
+  border: none;
+  background-color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  text-align: left;
+  color: #444;
+  font-weight: 500;
+}
+
+.sidebar-button:hover {
+  background-color: #e9f5fe;
+  color: #2196f3;
+}
+
+.sidebar-button svg {
+  min-width: 16px;
+}
+
+/* Adjust the main content container to make room for the sidebar */
+@media (min-width: 1200px) {
+  .dashboard-grid {
+    margin-left: 60px;
+  }
+}
   
   @media (min-width: 768px) {
     .asset-allocation {
