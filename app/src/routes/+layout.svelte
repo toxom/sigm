@@ -34,7 +34,7 @@
   
 <div class="app-container">
   <header>
-    <div class="logo">My App</div>
+    <div class="logo">Magellan</div>
     <button class="profile-button" on:click={toggleProfileOverlay}>
       {user ? user.name || user.username : 'Sign In'}
     </button>

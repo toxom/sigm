@@ -41,10 +41,14 @@
 		"vitest": "^3.0.0"
 	},
 	"dependencies": {
+		"@noble/ed25519": "^2.2.3",
+		"@noble/hashes": "^1.7.1",
 		"@types/crypto-js": "^4.2.2",
 		"axios": "^1.8.4",
+		"bybit-api": "^4.1.1",
 		"crypto-js": "^4.2.0",
 		"dotenv": "^16.4.7",
+		"huobi-api": "^1.0.0",
 		"lucide-svelte": "^0.487.0",
 		"pocketbase": "^0.25.2"
 	}
