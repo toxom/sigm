@@ -1,0 +1,37 @@
+// src/styles/themes.scss
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Open+Sans:wght@400;700&family=Source+Code+Pro:wght@400;700&family=Montserrat:wght@400;700&family=Merriweather:wght@400;700&display=swap');
+
+:root {
+  --font-primary: 'Roboto', sans-serif;
+  --font-secondary: 'Open Sans', sans-serif;
+  --font-code: 'Source Code Pro', monospace;
+  --font-heading: 'Montserrat', sans-serif;
+  --font-reading: 'Merriweather', serif;
+}
+
+body {
+  font-family: var(--font-primary);
+  margin: 0;
+  padding: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-size: calc(1.5rem + 1vmin);
+}
+
+p {
+    font-size: calc(0.75rem + 1vmin);
+    font-family: var(--font-reading);
+
+}
+
+code, pre {
+  font-family: var(--font-code);
+}
+
+.app-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}

@@ -116,46 +116,7 @@ export async function getUserById(id: string): Promise<User | null> {
 export function unsubscribeFromChanges(unsubscribe: () => void): void {
     unsubscribe();
 }
-export async function fetchUserVisualizationData(): Promise<IcicleData> {
-    try {
-      // Fetch records from the users collection
-      const records = await pb.collection('users').getFullList({
-        sort: 'created', // Sort by creation date
-        expand: 'roles,permissions' // Example of expanding relations if needed
-      });
-  
-      // Transform the data into the required hierarchical format
-      const rootNode: IcicleData = {
-        name: "Users",
-        children: []
-      };
-  
-      const roleMap = new Map<string, IcicleNode>();
-      
-      records.forEach(user => {
-        // Get or create role category
-        const role = user.role || "No Role";
-        if (!roleMap.has(role)) {
-          roleMap.set(role, {
-            name: role,
-            children: []
-          });
-          rootNode.children.push(roleMap.get(role)!);
-        }
-        
-        // Add user to their role category
-        roleMap.get(role)!.children!.push({
-          name: user.name || user.username || user.id,
-          value: user.activityScore || 1 // Example value metric
-        });
-      });
-  
-      return rootNode;
-    } catch (error) {
-      console.error("Error fetching user data:", error);
-      throw error;
-    }
-  }
+
 
 // onMount(async () => {
 //     const connected = await checkPocketBaseConnection();
