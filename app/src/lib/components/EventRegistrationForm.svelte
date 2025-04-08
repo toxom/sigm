@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { ChevronLeft } from "lucide-svelte";
+
     // Define types for form data
     interface RegistrationFormData {
       name: string;
@@ -149,7 +151,11 @@
         <span>{eventDetails.location}</span>
       </div>
       <button class="toggle-button">
-        {isFormExpanded ? 'Close' : 'Register Now'}
+        {#if isFormExpanded}
+          <ChevronLeft />
+        {:else}
+          Register Now
+        {/if}
       </button>
     </div>
   
@@ -333,12 +339,17 @@
   
   <style>
     .registration-container {
-      max-width: 800px;
+      max-width: 1600px;
       margin: 0 auto;
       border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
       overflow: hidden;
       transition: all 0.3s ease;
+      width: 100%;
+      height: auto;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
     }
   
     .event-header {
@@ -348,16 +359,24 @@
       cursor: pointer;
       transition: all 0.3s ease;
       display: flex;
-      height: 50vh;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       text-align: center;
+      /* border-radius: 50%; */
+      width: 100%;
+      height: 100%;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
     }
   
     .event-header.minimized {
       padding: 1rem;
-      height: auto;
+      width: calc(100% - 2rem);
+      height: 80px;
+      border-radius: 4rem;
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
     }
   
     .event-title {
@@ -371,7 +390,11 @@
     }
   
     .event-header.minimized .event-title {
-      font-size: 1.2rem;
+      font-size: 1.4rem;
+      text-align: right;
+      width: 100%;
+      margin-right: 1rem;
+
     }
   
     .event-details {
@@ -382,38 +405,61 @@
     }
   
     .event-header.minimized .event-details {
-      font-size: 0.9rem;
+      font-size: 1.2rem;
       margin-bottom: 0.5rem;
+      margin-right: 1rem;
+      text-align: right;
+      width: 100%;
     }
+
+
   
     .location-dot {
       margin: 0 0.5rem;
     }
   
     .toggle-button {
-      background-color: white;
       color: #3a76d8;
       border: none;
-      border-radius: 4px;
-      padding: 0.75rem 1.5rem;
+      border-radius: 2rem;
       font-weight: 600;
+      font-size: 1.5rem;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.2s ease;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
-  
+
     .toggle-button:hover {
       background-color: #f8f9fa;
       transform: translateY(-2px);
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
+
+    .event-header.minimized .toggle-button {
+      font-size: 0.9rem;
+      position: absolute;
+      left: 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 4rem;
+      height: 4rem;
+      border-radius: 50%;
+    }
   
     .registration-form {
       padding: 1.5rem;
-      background-color: white;
+
       max-height: 100%;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
       overflow-y: auto;
       transition: max-height 0.3s ease;
+      backdrop-filter: blur(20px);
+
     }
   
     .progress-bar {
@@ -426,6 +472,7 @@
       top: 0;
       background-color: white;
       z-index: 10;
+      width: calc(100% - 2rem);
     }
   
     .step {
@@ -442,6 +489,7 @@
   
     .form-content {
       animation: fadeIn 0.3s ease-in-out;
+      width: calc(100% - 3rem);
     }
   
     .form-section {
@@ -451,7 +499,7 @@
     h2 {
       margin-bottom: 1rem;
       color: #333;
-      font-size: 1.2rem;
+      font-size: 1.4rem;
     }
   
     .form-group {
@@ -502,7 +550,7 @@
   
     button {
       padding: 0.5rem 1rem;
-      font-size: 0.9rem;
+      font-size: 1rem;
       font-weight: 500;
       border-radius: 4px;
       cursor: pointer;

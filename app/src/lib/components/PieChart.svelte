@@ -3,7 +3,7 @@
     import { getTokenLogo, generateTokenSvg } from '$lib/utils/tokens';
 
     export let size = 300;
-    export let bgColor = '#1a1a2e';
+    export let bgColor = '#3a76d8';
     export let fgColor = 'white';
     export let tokens = []; // This will come from your parent component now
 
@@ -260,11 +260,14 @@
 </script>
 
 <div class="portfolio-container">
-    <h2>Total Balance</h2>
 
     <div class="summary-container">
-
-        
+        <h2>Total Balance</h2>
+        <div class="metric">
+            <div class="metric-item">
+                <div class="value">{currencySymbols[selectedCurrency] || ''}{formatValue(totalBalance)}</div>
+            </div>
+        </div>
         <div class="currency-toggle">
             {#each Object.keys(currencySymbols) as currency}
                 <button 
@@ -275,17 +278,14 @@
                 </button>
             {/each}
         </div>
-        <div class="metric">
-            <div class="metric-item">
-                <div class="value">{currencySymbols[selectedCurrency] || ''}{formatValue(totalBalance)}</div>
-            </div>
-        </div>
         <div class="metric-item">
             <div class="metric-label">24h Change</div>
             <div class="value" class:positive={portfolioGrowth > 0} class:negative={portfolioGrowth < 0}>
                 {portfolioGrowth > 0 ? '+' : ''}{portfolioGrowth.toFixed(1)}%
             </div>
         </div>
+        <p class="balance-update">Last updated: {new Date().toLocaleString()}</p>
+
     </div>
     
     {#if isLoading}
@@ -394,16 +394,19 @@
             {/if}
         </svg>
     {/if}
+
 </div>
 
 <style>
     .portfolio-container {
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         align-items: center;
-        padding: 20px;
-        background: #1a1a2e;
-        border-radius: 10px;
+        padding: 0;
+        padding-bottom: 1rem;
+        background: linear-gradient(135deg, #3a76d8 0%, #9013fe 100%);
+        border-radius: 4rem;
+        margin-top: 1rem;
         color: white;
         width: 100%;
 
@@ -416,8 +419,10 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        margin-bottom: 20px;
-        width: 100%;
+        margin-left: 1rem;
+        margin-bottom: 1rem;
+        width: 50%;
+
     }
     
     .metric {
@@ -456,13 +461,13 @@
     }
     
     .currency-toggle button {
-        background: #2d2d42;
+        background: linear-gradient(135deg, #3a76d8 0%, #9013fe 100%);
         border: none;
         color: #a0a0a0;
         padding: 8px 16px;
         margin: 0 5px;
         margin-bottom: 5px;
-        border-radius: 5px;
+        border-radius: 2rem;
         cursor: pointer;
         transition: all 0.2s;
     }
@@ -478,7 +483,7 @@
     
     .pie-segment {
         transition: opacity 0.3s;
-        stroke: #1a1a2e;
+        background: linear-gradient(135deg, #3a76d8 0%, #9013fe 100%);
         stroke-width: 1;
     }
     
@@ -511,7 +516,11 @@
     .error {
         color: #FF6384;
     }
-
+    @media (max-width: 1000px) {
+        .portfolio-container {
+            flex-direction: column;
+        }
+    }
     @media (max-width: 480px) {
         .portfolio-container {
             padding: 10px;

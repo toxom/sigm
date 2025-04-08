@@ -3,7 +3,8 @@
     import { pb, currentUser, ensureAuthenticated, signOut } from '$lib/pocketbase';
     import Loader from 'components/Loader.svelte';
     import UserProfileOverlay from 'components/UserProfileOverlay.svelte';
-    
+    import prelogo1 from '$lib/assets/prelogo1.svg';
+
     // Don't import the SCSS file here if you're using @use in the style section
     
     let isLoading = true;
@@ -34,7 +35,11 @@
   
 <div class="app-container">
   <header>
-    <div class="logo">Magellan</div>
+    
+    <div class="logo">
+      <img src={prelogo1} alt="Logo" class="auth-logo" />
+      Magellan
+    </div>
     <button class="profile-button" on:click={toggleProfileOverlay}>
       {user ? user.name || user.username : 'Sign In'}
     </button>
@@ -73,7 +78,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 20px 0;
-    border-bottom: 1px solid #eee;
+    // border-bottom: 1px solid #eee;
     // This will override the global font for the header specifically
     font-family: var(--font-heading);
   }
@@ -81,8 +86,15 @@
   .logo {
     font-weight: bold;
     font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-self: center;
+    gap: 0.5rem;
   }
   
+  .auth-logo {
+    width: 4rem;
+  }
   .profile-button {
     padding: 8px 16px;
     border: none;
@@ -95,4 +107,6 @@
       background-color: #e0e0e0;
     }
   }
+
+  
 </style>

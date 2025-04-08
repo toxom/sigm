@@ -596,8 +596,10 @@ function mockPrice(symbol) {
   {:else if !user}
 
     <div class="auth-prompt">
-      <EventRegistrationForm />
+      <section >
 
+      <EventRegistrationForm />
+        </section>
       <p>Please log in to view your dashboard</p>
     </div>
   {:else if Object.keys(portfolios).length === 0}
@@ -612,24 +614,15 @@ function mockPrice(symbol) {
       </button>
     </div>
   {:else}
-    <div class="dashboard-header">
 
-      <div class="actions">
-        <button class="refresh-button" on:click={fetchBalances}>
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15" />
-          </svg>
-          Refresh
-        </button>
-        <button class="connect-button" on:click={openConnectionModal}>
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M12 5v14M5 12h14" />
-          </svg>
-          Add Exchange
-        </button>
-      </div>
-    </div>
-    
+    <section class="event-banner">
+      <EventRegistrationForm />
+      <!-- <EventRegistrationForm /> -->
+
+    </section>
+    <section >
+      <PieChart {tokens} size={350} />
+    </section>
     <div class="dashboard-grid">
       <div class="sidebar">
         <div class="sidebar-header">
@@ -651,14 +644,14 @@ function mockPrice(symbol) {
               <path d="M2 12h20" />
             </svg>
           </button>
-          <button class="sidebar-button" on:click={() => scrollToSection('portfolios-section')}>
+          <button class="sidebar-button" on:click={() => scrollToSection('feature-section')}>
             Exchanges
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
               <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
             </svg>
           </button>
-          <button class="sidebar-button" on:click={() => scrollToSection('tokens-section')}>
+          <button class="sidebar-button" on:click={() => scrollToSection('feature-section')}>
             Asset
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" />
@@ -667,20 +660,33 @@ function mockPrice(symbol) {
           </button>
         </div>
       </div>
-      <section class="balance-overview">
+      <!-- <section class="balance-overview">
         <EventRegistrationForm />
 
-      </section>
-      <section class="asset-allocation">
-        <PieChart {tokens} size={500} />
-        <p class="balance-update">Last updated: {new Date().toLocaleString()}</p>
-      </section>
-      <section class="portfolios-section">
+      </section> -->
+
+      <section class="feature-section">
         <h2>Your Exchanges</h2>
-        
+        <div class="dashboard-header">
+
+          <div class="actions">
+            <button class="refresh-button" on:click={fetchBalances}>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15" />
+              </svg>
+              Refresh
+            </button>
+            <button class="connect-button" on:click={openConnectionModal}>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 5v14M5 12h14" />
+              </svg>
+              Add Exchange
+            </button>
+          </div>
+        </div>
         <div class="portfolios-grid">
           {#each Object.values(portfolios) as portfolio}
-            <div class="portfolio-card">
+            <div class="card">
               <div class="portfolio-header">
                 <h3>{portfolio.name}</h3>
                 <span class="auth-badge">{portfolio.authType.toUpperCase()}</span>
@@ -720,7 +726,7 @@ function mockPrice(symbol) {
         </div>
       </section>
       
-      <section class="tokens-section">
+      <section class="feature-section">
         <h2>Your Assets ({tokens.length})</h2>
         
         {#if tokens.length === 0}
@@ -730,7 +736,7 @@ function mockPrice(symbol) {
         {:else}
           <div class="token-list">
 {#each tokens as token}
-  <div class="token-card">
+  <div class="card">
     <div class="token-header">
       <div class="token-info">
         <span class="token-icon">
@@ -815,10 +821,25 @@ function mockPrice(symbol) {
     gap: 12px;
   }
   
+  .feature-section {
+    padding: 1rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-radius: 4rem;
+    background: linear-gradient(135deg, #3a76d8 0%, #9013fe 100%);
+    h2 {
+      font-size: 2rem;
+      text-align: center;
+      color: white;
+    }
+  }
   .dashboard-grid {
     display: grid;
     grid-template-columns: 1fr;
     gap: 24px;
+    width: 100%;
+
+    margin: 0;
   }
   
   @media (min-width: 768px) {
@@ -826,8 +847,7 @@ function mockPrice(symbol) {
       grid-template-columns: repeat(2, 1fr);
     }
     
-    .portfolios-section,
-    .tokens-section {
+    .feature-section {
       grid-column: 1 / -1;
     }
   }
@@ -872,6 +892,17 @@ function mockPrice(symbol) {
     100% { transform: rotate(360deg); }
   }
 
+  .event-banner {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    overflow: hidden;
+    position: relative;
+    border-radius: 4rem;
+
+  }
   .token-logo {
     opacity: 0.1;
     position: relative;
@@ -894,8 +925,9 @@ function mockPrice(symbol) {
     align-items: center;
     gap: 8px;
     padding: 10px 16px;
-    border-radius: 4px;
+    border-radius: 2rem;
     font-weight: bold;
+    font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.2s;
   }
@@ -904,6 +936,8 @@ function mockPrice(symbol) {
     background-color: #3498db;
     color: white;
     border: none;
+    border-radius: 2rem;
+
   }
   
   .connect-button:hover {
@@ -922,16 +956,19 @@ function mockPrice(symbol) {
   
   section {
     background-color: #f9f9f9;
-    padding: 20px;
+    padding: 2rem;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
   }
   
   h2 {
     margin-top: 0;
     margin-bottom: 20px;
     color: #333;
-    border-bottom: 1px solid #eee;
+    /* border-bottom: 1px solid #eee; */
     padding-bottom: 10px;
     font-size: 1.2rem;
   }
@@ -959,12 +996,7 @@ function mockPrice(symbol) {
     gap: 16px;
   }
   
-  .portfolio-card {
-    background-color: white;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  }
+
   
   .portfolio-header {
     padding: 16px;
@@ -1059,13 +1091,16 @@ function mockPrice(symbol) {
     gap: 16px;
   }
   
-  .token-card {
+  .card {
     background-color: white;
-    border-radius: 8px;
+    border-radius: 2rem;
     overflow: hidden;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    &:hover {
+      transform: scale(1.05);
+    }
   }
-  
   .token-header {
     padding: 16px;
     background-color: #f5f5f5;
@@ -1204,8 +1239,9 @@ function mockPrice(symbol) {
     background-color: white;
     border-radius: 8px;
   }
-  .sshboard-grid {
-    display: grid;
+  .dashboard-grid {
+    display: flex;
+    flex-direction: column;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 20px;
     margin-top: 20px;
@@ -1214,7 +1250,7 @@ function mockPrice(symbol) {
   section {
     background: rgba(255, 255, 255, 0.05);
     border-radius: 10px;
-    padding: 20px;
+    padding: 0;
   }
   
   .asset-allocation {
@@ -1291,7 +1327,7 @@ function mockPrice(symbol) {
 /* Adjust the main content container to make room for the sidebar */
 @media (min-width: 1200px) {
   .dashboard-grid {
-    margin-left: 60px;
+    /* margin-left: 60px; */
   }
 }
   
