@@ -2,30 +2,24 @@ import type { RecordModel } from 'pocketbase';
 
 export interface User {
   id: string;
-  username?: string;
   email: string;
   emailVisibility: boolean;
   verified: boolean;
-  name?: string;
+  username?: string;
+  avatar?: string;
   firstName?: string;
   lastName?: string;
-  avatar?: string;
-  created: string;
-  updated: string;
+  residence?: string;
   themePreference?: string;
   languagePreference?: string;
-  residence?: string;
-  timezone?: string;
-  defaultCurrency?: string;
-  tradingExperience?: string;
-  riskTolerance?: string;
-  notificationPreferences?: Record<string, boolean>;
-  role: string;
-  totpSecret?: string; 
+  currencyPreference?: string;
+  timezonePreference?: string;
+  notificationsPreference?: string;
   factorValidated?: boolean; 
-  favoritePairs?: string[];
-  favoriteTokens?: string[];
-
+  kycValidated?: boolean; 
+  created: string;
+  updated: string;
+  totpSecret?: string; 
 }
 
 

@@ -37,19 +37,20 @@ export async function checkPocketBaseConnection() {
 export async function ensureAuthenticated(): Promise<boolean> {
     console.log('Checking authentication...');
     const now = Date.now();
-	if (now - lastAuthCheck < AUTH_CHECK_COOLDOWN && pb.authStore.isValid) {
+    
+    if (now - lastAuthCheck < AUTH_CHECK_COOLDOWN && pb.authStore.isValid) {
         return true;
     }
+    
     lastAuthCheck = now;    
     console.log('Current auth model:', pb.authStore.model);
     console.log('Is auth valid?', pb.authStore.isValid);
-    if (!pb.authStore.isValid) {
+    
+    if (pb.authStore.token && !pb.authStore.isValid) {
         console.log('Auth token is invalid. Attempting to refresh...');
         try {
             const authData = await pb.collection('users').authRefresh();
             console.log('Auth token refreshed successfully');
-            console.log('New auth model:', pb.authStore.model);
-            console.log('Auth refreshed:', authData);
             return true;
         } catch (error) {
             console.error('Failed to refresh auth token:', error);
@@ -57,7 +58,8 @@ export async function ensureAuthenticated(): Promise<boolean> {
             return false;
         }
     }
-    return true;
+    
+    return pb.authStore.isValid;
 }
 export async function signUp(email: string, password: string): Promise<User | null> {
     try {
@@ -117,7 +119,22 @@ export function unsubscribeFromChanges(unsubscribe: () => void): void {
     unsubscribe();
 }
 
-
+export async function authenticateWithGoogle() {
+    try {
+      const authData = await pb.collection('users').authWithOAuth2({
+        provider: 'google',
+        // Optional create data for new users
+        createData: {
+          // You can set default values for new users here
+        }
+      });
+      
+      return authData;
+    } catch (error) {
+      console.error('Google authentication error:', error);
+      throw error;
+    }
+  }
 // onMount(async () => {
 //     const connected = await checkPocketBaseConnection();
 //     if (connected) {
